@@ -1,0 +1,27 @@
+name: Check Build
+
+on:
+  push:
+    branches: [main, dev*]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build-check:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11.4'
+
+      - name: Set up and build
+        run: |
+          python3 -m venv .venv
+          . .venv/bin/activate
+          pip install -r analog-cim-sim/requirements.txt
+          ./scripts/build_simulator.bash
